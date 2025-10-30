@@ -1,0 +1,31 @@
+/* Aqui tenemos nuestro estilos globales
+   principalmente solo definimos el fondo de diferentes colores
+   y con una animacion suave*/
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+
+  background: linear-gradient(125deg, 
+    #d44b4b, 
+    #cca82e, 
+    #4b9952, 
+    #3373cc, 
+    #9059b6  
+  );
+
+  background-size: 400% 400%;
+  animation: gradientFlow 18s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

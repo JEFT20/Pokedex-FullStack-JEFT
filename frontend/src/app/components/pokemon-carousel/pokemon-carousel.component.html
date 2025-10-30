@@ -1,0 +1,18 @@
+<div class="carousel-container">
+  @if (loading()) {
+    <div class="carousel-loading">
+      <div class="spinner"></div>
+      <span>Cargando Pokémon...</span>
+    </div>
+  } @else {
+    <div class="carousel">
+      <div *ngFor="let p of pokemons(); let i = index" [class.active]="i === currentIndex()" class="carousel-item">
+        <img [src]="p.image" [alt]="p.name" />
+        <div class="poke-info">
+          <span class="poke-id">#{{ p.id }}</span>
+          <span class="poke-name">{{ p.name | titlecase }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>

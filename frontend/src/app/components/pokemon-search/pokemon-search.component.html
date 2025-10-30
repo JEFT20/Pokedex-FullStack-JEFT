@@ -1,0 +1,37 @@
+<div class="search-container">
+  <h1>Buscar Pokemon</h1>
+  
+  <div class="search-form">
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm" 
+      placeholder="Busca un Pokémon por nombre o número..."
+      class="search-input"
+      (keyup.enter)="searchPokemon()"
+    >
+    <button 
+      (click)="searchPokemon()" 
+      class="search-button"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Buscando...' : 'Buscar' }}
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Buscando Pokémon...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error">
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  @if (pokemon() && !loading()) {
+    <app-pokemon-detail [pokemon]="pokemon()!" (close)="closePokemonDetail()"></app-pokemon-detail>
+  }
+</div>

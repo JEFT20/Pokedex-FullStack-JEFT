@@ -1,0 +1,84 @@
+<div class="pokemon-card">
+  <button class="close-button" (click)="closeDetail()" title="Cerrar">✕</button>
+  <div class="pokemon-header">
+    <div class="pokemon-image">
+      <img [src]="getMainImage()" [alt]="pokemon.name" />
+    </div>
+    <div class="pokemon-info">
+      <h2>{{ pokemon.name | titlecase }}</h2>
+      <p class="pokemon-number">#{{ pokemon.id.toString().padStart(3, '0') }}</p>
+      <div class="pokemon-types">
+        @for (type of pokemon.types; track type.type.name) {
+          <span 
+            class="type-badge" 
+            [style.background-color]="getTypeColor(type.type.name)"
+          >
+            {{ type.type.name | titlecase }}
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="pokemon-stats">
+    <h3>Estadísticas</h3>
+    <div class="stats-grid">
+      @for (stat of pokemon.stats; track stat.stat.name) {
+        <div class="stat-item">
+          <span class="stat-name">{{ translateStat(stat.stat.name) }}</span>
+          <div class="stat-bar">
+            <div 
+              class="stat-fill" 
+              [style.width.%]="(stat.base_stat / 255) * 100"
+            ></div>
+          </div>
+          <span class="stat-value">{{ stat.base_stat }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="pokemon-details">
+    <div class="detail-item">
+      <strong>Altura:</strong> {{ pokemon.height / 10 }} m
+    </div>
+    <div class="detail-item">
+      <strong>Peso:</strong> {{ pokemon.weight / 10 }} kg
+    </div>
+  </div>
+
+  @if (message()) {
+    <div class="message" [class.success]="message()?.includes('correctamente') || message()?.includes('añadido')" [class.error]="message()?.includes('Error') || message()?.includes('ya está')">
+      {{ message() }}
+    </div>
+  }
+
+  <div class="favorite-actions">
+    <button 
+      (click)="toggleFavorite()" 
+      class="favorite-button"
+      [class.is-favorite]="isFavorite()"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Procesando...' : (isFavorite() ? '❤️ Quitar de Favoritos' : '🤍 Añadir a Favoritos') }}
+    </button>
+
+    @if (isFavorite()) {
+      <div class="nickname-section">
+        <input 
+          type="text" 
+          [(ngModel)]="nickname" 
+          placeholder="Añade un apodo..."
+          class="nickname-input"
+        >
+        <button 
+          (click)="saveNickname()" 
+          class="save-button"
+          [disabled]="loading()"
+        >
+          Guardar Apodo
+        </button>
+      </div>
+    }
+  </div>
+</div>

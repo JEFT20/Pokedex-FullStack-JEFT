@@ -1,0 +1,181 @@
+/* Aca defino los estilos globales para la aplicacion */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: rgba(255, 255, 255, 0.15); 
+  backdrop-filter: blur(15px) saturate(180%);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); 
+  border: 1px solid rgba(26, 8, 8, 0.4); 
+  border-radius: 12px; 
+  position: sticky; 
+  top: 0;
+  z-index: 1000;
+  margin: 10px;
+  width: calc(100% - 20px);
+}
+
+.main-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.nav-brand h1 {
+  color: #000000; 
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link:hover {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.nav-link.active {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+}
+
+.app-content {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+.app-footer p {
+  max-width: 1200px;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    margin: 8px;
+    width: calc(100% - 16px);
+  }
+
+  .main-nav {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+  }
+  
+  .nav-brand h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+  
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-links li {
+    flex: 0 1 auto;
+  }
+  
+  .nav-link {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+    display: block;
+    white-space: nowrap;
+  }
+  
+  .app-content {
+    padding: 1rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    margin: 5px;
+    width: calc(100% - 10px);
+  }
+
+  .main-nav {
+    padding: 0.6rem 0.5rem;
+    gap: 0.6rem;
+  }
+
+  .nav-brand h1 {
+    font-size: 1.4rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+  
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .app-content {
+    padding: 0.8rem 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.app-content {
+  animation: fadeIn 0.5s ease-out;
+}

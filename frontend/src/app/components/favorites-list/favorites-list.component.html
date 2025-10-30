@@ -1,0 +1,154 @@
+<div class="favorites-container">
+  <h1>Mis Pokémon Favoritos</h1>
+
+  @if (loading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Cargando favoritos...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error">
+      <p>{{ error() }}</p>
+      <button (click)="loadFavorites()" class="retry-button">Intentar de nuevo</button>
+    </div>
+  }
+
+  @if (!loading() && favorites().length === 0) {
+    <div class="empty-state">
+      <h2>No tienes Pokémon favoritos</h2>
+      <p>Ve a la página de búsqueda para añadir tus primeros favoritos</p>
+      <a routerLink="/search" class="search-link">Buscar Pokémon</a>
+    </div>
+  }
+
+  @if (!loading() && favorites().length > 0) {
+    <div class="favorites-grid">
+      @for (favorite of favorites(); track favorite.id) {
+        <div class="favorite-card-container">
+          @if (favorite.loading) {
+            <div class="card-loading">
+              <div class="small-spinner"></div>
+              <p>Cargando...</p>
+            </div>
+          } @else if (favorite.pokemonData) {
+            <div class="flip-card" [class.flipped]="isFlipped(favorite.id)">
+              <!-- Frente de la carta -->
+              <div class="flip-card-front">
+                <button class="flip-button" (click)="toggleFlip(favorite.id)" title="Ver estadísticas">
+                  📊
+                </button>
+                
+                <div class="pokemon-image">
+                  <img [src]="getMainImage(favorite.pokemonData)" [alt]="favorite.name" />
+                </div>
+                
+                <div class="pokemon-info">
+                  <h3>{{ favorite.pokemonData.name | titlecase }}</h3>
+                  <p class="pokemon-number">#{{ favorite.pokemonData.id.toString().padStart(3, '0') }}</p>
+                  
+                  <div class="pokemon-types">
+                    @for (type of favorite.pokemonData.types; track type.type.name) {
+                      <span 
+                        class="type-badge" 
+                        [style.background-color]="getTypeColor(type.type.name)"
+                      >
+                        {{ type.type.name | titlecase }}
+                      </span>
+                    }
+                  </div>
+
+                  <div class="nickname-section">
+                    @if (editingNickname() === favorite.id) {
+                      <div class="nickname-edit">
+                        <input 
+                          type="text" 
+                          [(ngModel)]="tempNickname" 
+                          placeholder="Añade un apodo..."
+                          class="nickname-input"
+                          (keyup.enter)="saveNickname(favorite.id)"
+                          (keyup.escape)="cancelEditing()"
+                        >
+                        <div class="nickname-buttons">
+                          <button (click)="saveNickname(favorite.id)" class="save-btn">✓</button>
+                          <button (click)="cancelEditing()" class="cancel-btn">✗</button>
+                        </div>
+                      </div>
+                    } @else {
+                      <div class="nickname-display">
+                        @if (favorite.nickname) {
+                          <p class="nickname">"{{ favorite.nickname }}"</p>
+                        } @else {
+                          <p class="no-nickname">Sin apodo</p>
+                        }
+                        <button 
+                          (click)="startEditingNickname(favorite.id, favorite.nickname || '')" 
+                          class="edit-nickname-btn"
+                          title="Editar apodo"
+                        >
+                          ✏️
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="card-actions">
+                  <button 
+                    (click)="deleteFavorite(favorite.id)" 
+                    class="delete-button"
+                    title="Eliminar de favoritos"
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dorso de la carta (estadísticas) -->
+              <div class="flip-card-back">
+                <button class="flip-button back" (click)="toggleFlip(favorite.id)" title="Volver">
+                  ↩️
+                </button>
+                
+                <h3 class="stats-title">Estadísticas de Poder</h3>
+                <div class="pokemon-mini-header">
+                  <p class="mini-name">{{ favorite.pokemonData.name | titlecase }}</p>
+                  <p class="mini-number">#{{ favorite.pokemonData.id.toString().padStart(3, '0') }}</p>
+                </div>
+
+                <div class="stats-grid-back">
+                  @for (stat of favorite.pokemonData.stats; track stat.stat.name) {
+                    <div class="stat-item-back">
+                      <span class="stat-name-back">{{ translateStat(stat.stat.name) }}</span>
+                      <div class="stat-bar-back">
+                        <div 
+                          class="stat-fill-back" 
+                          [style.width.%]="(stat.base_stat / 200) * 100"
+                        ></div>
+                      </div>
+                      <span class="stat-value-back">{{ stat.base_stat }}</span>
+                    </div>
+                  }
+                </div>
+
+                <div class="physical-details">
+                  <div class="detail-back">
+                    <strong>Altura:</strong> {{ favorite.pokemonData.height / 10 }} m
+                  </div>
+                  <div class="detail-back">
+                    <strong>Peso:</strong> {{ favorite.pokemonData.weight / 10 }} kg
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="error-card">
+              <p>Error al cargar Pokémon</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
